@@ -1,4 +1,4 @@
-# Copyright (C) 2008 The Android Open Source Project
+# Copyright (C) 2012 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 LOCAL_PATH:= $(call my-dir)
-# HAL module implemenation stored in
-# hw/<COPYPIX_HARDWARE_MODULE_ID>.<ro.board.platform>.so
+
+ifeq ($(TARGET_BOARD_PLATFORM),msm7x30)
+
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := lights.c
-
+LOCAL_MODULE := camera.msm7x30
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 
-LOCAL_SHARED_LIBRARIES := liblog
-
-LOCAL_MODULE := lights.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS := optional
+
+LOCAL_SRC_FILES := camera.cpp
+LOCAL_SHARED_LIBRARIES := liblog libutils libcutils
+LOCAL_SHARED_LIBRARIES += libui libhardware libcamera_client
+LOCAL_SHARED_LIBRARIES += libcamera
+LOCAL_PRELINK_MODULE := false
+
 include $(BUILD_SHARED_LIBRARY)
+
+endif # TARGET_DEVICE
